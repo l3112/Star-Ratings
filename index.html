@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Reviews and Ratings</title>
+    <style>
+        .stars-outer{
+            position: relative;
+            display: inline-block;
+        }
+        .stars-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+        }
+        .stars-outer::before{
+            content: "\f005 \f005 \f005 \f005 \f005";
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+
+        }
+        .stars-outer::before{
+            content: "\f005 \f005 \f005 \f005 \f005";
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: goldenrod
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="form-group">
+                <select name ="" id="product-select" class="form-control custom-select">
+                    <option value ="0" disabled selected>Pick a Group or Singer</option>
+                    <option value="Karel of The Belles">Karel of The Belles - Rocking the Holidays All Year Long!</option>
+                    <option value="Hippolita">Hippolita - Ptrykos-Inspired Jazz</option>
+                    <option value="Ruta Wandrey"> Ruta Wandrey - Pop that's Out of This World</option>
+                    <option value="To-Yerta Janhill"> To-Yerta Janhill - Who Knows What Europop is?</option>
+                    <option value="Jotaggio and Glissa">Jotaggio and Glissa - The Dueling Operatic Masters!</option>
+                </select>
+        </div>
+
+<div class="form-group">
+    <input type="number" id="rating-control" class="form-control" step="0.1" max="5" placeholder="Ratings 1 - 5" disabled>
+    
+</div>
+
+        <table class="table table-striped"> 
+           <thread> <tr>
+                <th>Music in New Cloverfielden</th>
+                <th>Rating</th>
+            </tr>
+            </thread>
+            <tbody>
+                <tr>
+                    <tr class="rock">
+                        <td>Karel of The Belles</td>
+                        <td>
+                            <div class="stars-outer"> 
+                                <div class="star-inner"></div>
+                            </div>
+                            <span class="number-rating"></span>
+                        </td>
+                    </tr>
+                    <tr class="NuJazz">
+                            <td>Hippolita</td>
+                            <td>
+                                <div class="stars-outer"> 
+                                    <div class="star-inner"></div> 
+                                </div>
+                                <span class="number-rating"></span>
+                            </td>
+                        </tr>
+                        <tr class="Pop">
+                                <td>Ruta Wandrey</td>
+                                <td>
+                                    <div class="stars-outer"> 
+                                        <div class="star-inner"></div>
+                                    </div>
+                                    <span class="number-rating"></span>
+                                </td>
+                            </tr>
+                            <tr class="Eurobeat">
+                                    <td>To-Yerta Janhill</td>
+                                    <td>
+                                        <div class="stars-outer"> 
+                                            <div class="star-inner"></div>
+                                        </div>
+                                        <span class="number-rating"></span>
+                                    </td>
+                                </tr>
+                                <tr class="Operatic">
+                                        <td>Jotaggio and Glissa</td>
+                                        <td>
+                                            <div class="stars-outer"> 
+                                                <div class="star-inner"></div>
+                                            </div>
+                                            <span class="number-rating"></span>
+                                        </td>
+                                    </tr>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+
+        // initial ratings
+        // spaces in names may cause an issue, be mindful
+
+        const ratings = {
+            "Karel of The Belles": 4.9,
+            Hippolita: 4.4,
+            "Ruta Wandrey": 3.6,
+            "To-Yerta Janhill": 2.2,
+            "Jotaggio and Glissa": 3.4,
+
+        }
+
+        // All the stars
+        const starsTotal = 5;
+
+// Form elements
+
+const productSelect = document.getElementById
+('product-select');
+const ratingCont = document.getElementById
+('rating-control');
+
+// product init
+let product;
+
+// product select change
+productSelect.addEventListener('change', (e) =>{
+    product = e.target.value; //value of what's selected
+    //enable rating!
+    ratingCont.disabled = false;
+    ratingCont.value = ratings[product];
+
+})
+
+//rating control change
+ratingCont.addEventListener('blur', (e) =>{
+    const rating = e.target.value;
+    // 5 or under
+if(rating > 5){
+    alert('I like the enthusiasm, but we need the rating between 1 and 5');
+    return;
+}
+
+// change the rating
+ratings[product] = rating;
+getRatings();
+
+});
+
+// run getRatings when DOM loads
+// docquery selector line in getRatings ends up throwing an error bc of this; I don't think the DOM loads in time.
+document.addEventListener(`DOMContentLoaded`, getRatings);
+
+        // check ratings
+
+        function getRatings(){
+            for(let rating in ratings){
+                console.log(ratings);
+                // now we need a percentage
+                const StarPercent = (ratings[rating] / starsTotal) * 100;
+                console.log(StarPercent)
+                // we can round that to the nearest ten
+                const starPercentRound = `${Math.round(StarPercent / 10) * 10}%`;
+                // ^ goes in the stars inner
+                console.log(starPercentRound)
+                // width of stars-inner to %
+                // see below; classes need a . in front
+                //                document.querySelector(`.${rating} .stars-inner`).style.width = starPercentRound;
+
+            }
+        }
+
+        // if you use console log, it reorganizes the groups
+
+
+    </script>
+</body>
+</html>
